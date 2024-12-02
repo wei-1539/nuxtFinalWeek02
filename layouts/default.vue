@@ -2,8 +2,9 @@
 
 <template>
   <div>
-    Layout: default
+    <AppHeader/>
     <slot />
+    <AppFooter/>
   </div>
 </template>
 
