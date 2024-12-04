@@ -1,12 +1,12 @@
 <script setup>
-import {Pagination, Autoplay } from "swiper/modules";
+import { Pagination, Autoplay } from "swiper/modules";
+import { Icon } from "@iconify/vue";
 </script>
 <template>
   <main class="overflow-hidden">
     <section class="hero position-relative">
       <Swiper
         :slides-per-view="1"
-      
         :pagination="{ el: '.swiper-pagination', type: 'bullets' }"
         :autoplay="{
           delay: 3000,
@@ -67,26 +67,26 @@ import {Pagination, Autoplay } from "swiper/modules";
           <div class="col-12 col-md-2">
             <div class="mb-10 mb-md-0">
               <h2 class="mb-6 mb-md-10 fs-1 fw-bold text-primary-100">
-                最新<br>消息
+                最新<br />消息
               </h2>
               <div class="deco-line" />
             </div>
           </div>
           <div class="col-12 col-md-10 d-flex flex-column gap-10">
-            <div
-              class="card bg-transparent border-0"
-            >
-              <div class="d-flex flex-column flex-md-row align-items-center gap-6">
+            <div class="card bg-transparent border-0">
+              <div
+                class="d-flex flex-column flex-md-row align-items-center gap-6"
+              >
                 <picture>
                   <source
                     srcset="@/assets/images/home-news-1.png"
                     media="(min-width: 576px)"
-                  >
+                  />
                   <img
                     src="@/assets/images/home-news-sm-1.png"
                     class="w-100 rounded-3"
                     alt="可看見海景及泳池的套房"
-                  >
+                  />
                 </picture>
                 <div class="card-body p-0">
                   <h3 class="card-title mb-2 mb-md-6 fw-bold">
@@ -99,25 +99,23 @@ import {Pagination, Autoplay } from "swiper/modules";
               </div>
             </div>
 
-            <div
-              class="card bg-transparent border-0"
-            >
-              <div class="d-flex flex-column flex-md-row align-items-center gap-6">
+            <div class="card bg-transparent border-0">
+              <div
+                class="d-flex flex-column flex-md-row align-items-center gap-6"
+              >
                 <picture>
                   <source
                     srcset="@/assets/images/home-news-2.png"
                     media="(min-width: 576px)"
-                  >
+                  />
                   <img
                     src="@/assets/images/home-news-sm-2.png"
                     class="w-100 rounded-3"
                     alt="在雙人床上的兩顆灰色枕頭"
-                  >
+                  />
                 </picture>
                 <div class="card-body p-0">
-                  <h3 class="card-title mb-2 mb-md-6 fw-bold">
-                    輕鬆住房專案
-                  </h3>
+                  <h3 class="card-title mb-2 mb-md-6 fw-bold">輕鬆住房專案</h3>
                   <p class="card-text text-neutral-80 fs-8 fs-md-7 fw-medium">
                     我們知道，有時候您只是需要一個舒適的地方放鬆心情。因此，我們推出了「輕鬆住房專案」，讓您無壓力地享受住宿。不管是短期的休息，還是長期的住宿，我們都會以最貼心的服務，讓您感到賓至如歸。
                   </p>
@@ -125,20 +123,20 @@ import {Pagination, Autoplay } from "swiper/modules";
               </div>
             </div>
 
-            <div
-              class="card bg-transparent border-0"
-            >
-              <div class="d-flex flex-column flex-md-row align-items-center gap-6">
+            <div class="card bg-transparent border-0">
+              <div
+                class="d-flex flex-column flex-md-row align-items-center gap-6"
+              >
                 <picture>
                   <source
                     srcset="@/assets/images/home-news-3.png"
                     media="(min-width: 576px)"
-                  >
+                  />
                   <img
                     src="@/assets/images/home-news-sm-3.png"
                     class="w-100 rounded-3"
                     alt="坐在沙發上的聖誕麋鹿玩偶"
-                  >
+                  />
                 </picture>
                 <div class="card-body p-0">
                   <h3 class="card-title mb-2 mb-md-6 fw-bold">
@@ -157,22 +155,22 @@ import {Pagination, Autoplay } from "swiper/modules";
 
     <section class="about position-relative z-n1 bg-neutral-120 py-20 py-md-30">
       <div class="container p-0">
-        <div class="about-content p-6 p-md-20 mt-10 ms-10 me-5 mt-md-20 mx-md-auto text-neutral-0">
+        <div
+          class="about-content p-6 p-md-20 mt-10 ms-10 me-5 mt-md-20 mx-md-auto text-neutral-0"
+        >
           <div class="d-flex align-items-center gap-10 mb-10 mb-md-20">
-            <h2 class="text-nowrap mb-0 fs-1 fw-bold">
-              關於<br>我們
-            </h2>
+            <h2 class="text-nowrap mb-0 fs-1 fw-bold">關於<br />我們</h2>
             <div class="deco-line" />
           </div>
           <div class="d-flex flex-column gap-4 gap-md-10 fw-medium">
             <p class="mb-0 fs-8 fs-md-7">
               享樂酒店，位於美麗島高雄的心臟地帶，是這座城市的璀璨瑰寶與傲人地標。
-              <br>
+              <br />
               我們的存在，不僅僅是為了提供奢華的住宿體驗，更是為了將高雄的美麗與活力，獻給每一位蒞臨的旅客。
             </p>
             <p class="mb-0 fs-8 fs-md-7">
               我們的酒店，擁有時尚典雅的裝潢，每一個細節都充滿著藝術與設計的精緻。
-              <br>
+              <br />
               我們的員工，都以熱情的服務與專業的態度，讓每一位客人都能感受到賓至如歸的溫暖。
             </p>
             <p class="mb-0 fs-8 fs-md-7">
@@ -186,8 +184,12 @@ import {Pagination, Autoplay } from "swiper/modules";
       </div>
     </section>
 
-    <section class="room-intro position-relative px-3 py-20 px-md-0 py-md-30 bg-neutral-120">
-      <div class="d-flex flex-column flex-md-row justify-content-center align-items-center justify-content-md-start align-items-md-end gap-6 gap-md-20">
+    <section
+      class="room-intro position-relative px-3 py-20 px-md-0 py-md-30 bg-neutral-120"
+    >
+      <div
+        class="d-flex flex-column flex-md-row justify-content-center align-items-center justify-content-md-start align-items-md-end gap-6 gap-md-20"
+      >
         <Swiper
           ref="roomSwiper"
           :modules="[Pagination, Autoplay]"
@@ -199,34 +201,27 @@ import {Pagination, Autoplay } from "swiper/modules";
           }"
           :loop="true"
         >
-          <SwiperSlide
-            v-for="(num, index) in 5"
-            :key="index"
-          >
+          <SwiperSlide v-for="(num, index) in 5" :key="index">
             <picture>
               <source
                 srcset="@/assets/images/home-room-1.png"
                 media="(min-width:768px)"
-              >
+              />
               <img
                 class="w-100"
                 src="@/assets/images/home-room-sm-1.png"
                 alt="room-a"
-              >
+              />
             </picture>
           </SwiperSlide>
         </Swiper>
-        
+
         <div class="room-intro-content text-neutral-0">
-          <h2 class="mb-2 mb-md-4 fw-bold">
-            尊爵雙人房
-          </h2>
+          <h2 class="mb-2 mb-md-4 fw-bold">尊爵雙人房</h2>
           <p class="mb-6 mb-md-10 fs-8 fs-md-7">
             享受高級的住宿體驗，尊爵雙人房提供給您舒適寬敞的空間和精緻的裝潢。
           </p>
-          <div class="mb-6 mb-md-10 fs-3 fw-bold">
-            NT$ 10,000
-          </div>
+          <div class="mb-6 mb-md-10 fs-3 fw-bold">NT$ 10,000</div>
           <RouterLink
             to="/rooms"
             class="btn btn-neutral-0 d-flex justify-content-end align-items-center gap-3 w-100 p-5 p-md-10 mb-6 mb-md-10 text-end text-neutral-100 fs-7 fs-md-5 fw-bold border-0"
@@ -243,7 +238,10 @@ import {Pagination, Autoplay } from "swiper/modules";
               <Icon
                 icon="mdi:arrow-left"
                 class="bi m-4"
-                style="font-size: 1.5rem; --bs-icon-link-transform: translateX(-0.25em);"
+                style="
+                  font-size: 1.5rem;
+                  --bs-icon-link-transform: translateX(-0.25em);
+                "
               />
             </button>
             <button
@@ -254,7 +252,7 @@ import {Pagination, Autoplay } from "swiper/modules";
               <Icon
                 icon="mdi:arrow-right"
                 class="bi m-4"
-                style="font-size: 1.5rem;"
+                style="font-size: 1.5rem"
               />
             </button>
           </div>
@@ -265,33 +263,33 @@ import {Pagination, Autoplay } from "swiper/modules";
     <section class="delicacy position-relative py-20 py-md-30 bg-primary-10">
       <div class="container">
         <div class="d-flex align-items-center gap-10 mb-10 mb-md-20">
-          <h2 class="mb-0 fs-1 fw-bold text-primary-100">
-            佳餚<br>美饌
-          </h2>
+          <h2 class="mb-0 fs-1 fw-bold text-primary-100">佳餚<br />美饌</h2>
           <div class="deco-line" />
         </div>
         <div class="row flex-nowrap overflow-x-auto">
           <div class="col-10 col-md-6 col-xl-4">
-            <div
-              class="card position-relative border-0 rounded-3"
-            >
+            <div class="card position-relative border-0 rounded-3">
               <picture>
                 <source
                   srcset="@/assets/images/home-food-1.png"
                   media="(min-width: 576px)"
-                >
+                />
                 <img
                   class="w-100 rounded-3"
                   src="@/assets/images/home-food-sm-1.png"
                   alt="海霸"
-                >
+                />
               </picture>
-              <div class="card-body position-absolute bottom-0 p-4 p-md-6 rounded-bottom-3  text-neutral-0">
-                <div class="d-flex justify-content-between align-items-center mb-4 mb-md-6">
-                  <h5 class="card-title mb-0 fw-bold">
-                    海霸
-                  </h5>
-                  <div class="d-flex justify-content-between gap-4 text-neutral-40 fs-8 fs-md-7">
+              <div
+                class="card-body position-absolute bottom-0 p-4 p-md-6 rounded-bottom-3 text-neutral-0"
+              >
+                <div
+                  class="d-flex justify-content-between align-items-center mb-4 mb-md-6"
+                >
+                  <h5 class="card-title mb-0 fw-bold">海霸</h5>
+                  <div
+                    class="d-flex justify-content-between gap-4 text-neutral-40 fs-8 fs-md-7"
+                  >
                     <span class="fw-bold">SUN-MON</span>
                     <span class="fw-bold">11:00 - 20:30</span>
                   </div>
@@ -304,26 +302,28 @@ import {Pagination, Autoplay } from "swiper/modules";
           </div>
 
           <div class="col-10 col-md-6 col-xl-4">
-            <div
-              class="card position-relative border-0 rounded-3"
-            >
+            <div class="card position-relative border-0 rounded-3">
               <picture>
                 <source
                   srcset="@/assets/images/home-food-2.png"
                   media="(min-width: 576px)"
-                >
+                />
                 <img
                   class="w-100 rounded-3"
                   src="@/assets/images/home-food-sm-2.png"
                   alt="日食"
-                >
+                />
               </picture>
-              <div class="card-body position-absolute bottom-0 p-4 p-md-6 rounded-bottom-3  text-neutral-0">
-                <div class="d-flex justify-content-between align-items-center mb-4 mb-md-6">
-                  <h5 class="card-title mb-0 fw-bold">
-                    日食
-                  </h5>
-                  <div class="d-flex justify-content-between gap-4 text-neutral-40 fs-8 fs-md-7">
+              <div
+                class="card-body position-absolute bottom-0 p-4 p-md-6 rounded-bottom-3 text-neutral-0"
+              >
+                <div
+                  class="d-flex justify-content-between align-items-center mb-4 mb-md-6"
+                >
+                  <h5 class="card-title mb-0 fw-bold">日食</h5>
+                  <div
+                    class="d-flex justify-content-between gap-4 text-neutral-40 fs-8 fs-md-7"
+                  >
                     <span class="fw-bold">SUN-MON</span>
                     <span class="fw-bold">17:00 - 22:00</span>
                   </div>
@@ -336,26 +336,28 @@ import {Pagination, Autoplay } from "swiper/modules";
           </div>
 
           <div class="col-10 col-md-6 col-xl-4">
-            <div
-              class="card position-relative border-0 rounded-3"
-            >
+            <div class="card position-relative border-0 rounded-3">
               <picture>
                 <source
                   srcset="@/assets/images/home-food-3.png"
                   media="(min-width: 576px)"
-                >
+                />
                 <img
                   class="w-100 rounded-3"
                   src="@/assets/images/home-food-sm-3.png"
                   alt="山臻"
-                >
+                />
               </picture>
-              <div class="card-body position-absolute bottom-0 p-4 p-md-6 rounded-bottom-3  text-neutral-0">
-                <div class="d-flex justify-content-between align-items-center mb-4 mb-md-6">
-                  <h5 class="card-title mb-0 fw-bold">
-                    山臻
-                  </h5>
-                  <div class="d-flex justify-content-between gap-4 text-neutral-40 fs-8 fs-md-7">
+              <div
+                class="card-body position-absolute bottom-0 p-4 p-md-6 rounded-bottom-3 text-neutral-0"
+              >
+                <div
+                  class="d-flex justify-content-between align-items-center mb-4 mb-md-6"
+                >
+                  <h5 class="card-title mb-0 fw-bold">山臻</h5>
+                  <div
+                    class="d-flex justify-content-between gap-4 text-neutral-40 fs-8 fs-md-7"
+                  >
                     <span class="fw-bold">SUN-MON</span>
                     <span class="fw-bold">11:30 - 20:30</span>
                   </div>
@@ -368,26 +370,28 @@ import {Pagination, Autoplay } from "swiper/modules";
           </div>
 
           <div class="col-10 col-md-6 col-xl-4">
-            <div
-              class="card position-relative border-0 rounded-3"
-            >
+            <div class="card position-relative border-0 rounded-3">
               <picture>
                 <source
                   srcset="@/assets/images/home-food-4.png"
                   media="(min-width: 576px)"
-                >
+                />
                 <img
                   class="w-100 rounded-3"
                   src="@/assets/images/home-food-sm-4.png"
                   alt="月永"
-                >
+                />
               </picture>
-              <div class="card-body position-absolute bottom-0 p-4 p-md-6 rounded-bottom-3  text-neutral-0">
-                <div class="d-flex justify-content-between align-items-center mb-4 mb-md-6">
-                  <h5 class="card-title mb-0 fw-bold">
-                    月永
-                  </h5>
-                  <div class="d-flex justify-content-between gap-4 text-neutral-40 fs-8 fs-md-7">
+              <div
+                class="card-body position-absolute bottom-0 p-4 p-md-6 rounded-bottom-3 text-neutral-0"
+              >
+                <div
+                  class="d-flex justify-content-between align-items-center mb-4 mb-md-6"
+                >
+                  <h5 class="card-title mb-0 fw-bold">月永</h5>
+                  <div
+                    class="d-flex justify-content-between gap-4 text-neutral-40 fs-8 fs-md-7"
+                  >
                     <span class="fw-bold">SUN-MON</span>
                     <span class="fw-bold">11:00 - 20:00</span>
                   </div>
@@ -400,26 +404,28 @@ import {Pagination, Autoplay } from "swiper/modules";
           </div>
 
           <div class="col-10 col-md-6 col-xl-4">
-            <div
-              class="card position-relative border-0 rounded-3"
-            >
+            <div class="card position-relative border-0 rounded-3">
               <picture>
                 <source
                   srcset="@/assets/images/home-food-5.png"
                   media="(min-width: 576px)"
-                >
+                />
                 <img
                   class="w-100 rounded-3"
                   src="@/assets/images/home-food-sm-5.png"
                   alt="天潮"
-                >
+                />
               </picture>
-              <div class="card-body position-absolute bottom-0 p-4 p-md-6 rounded-bottom-3  text-neutral-0">
-                <div class="d-flex justify-content-between align-items-center mb-4 mb-md-6">
-                  <h5 class="card-title mb-0 fw-bold">
-                    天潮
-                  </h5>
-                  <div class="d-flex justify-content-between gap-4 text-neutral-40 fs-8 fs-md-7">
+              <div
+                class="card-body position-absolute bottom-0 p-4 p-md-6 rounded-bottom-3 text-neutral-0"
+              >
+                <div
+                  class="d-flex justify-content-between align-items-center mb-4 mb-md-6"
+                >
+                  <h5 class="card-title mb-0 fw-bold">天潮</h5>
+                  <div
+                    class="d-flex justify-content-between gap-4 text-neutral-40 fs-8 fs-md-7"
+                  >
                     <span class="fw-bold">SUN-MON</span>
                     <span class="fw-bold">14:00 - 19:30</span>
                   </div>
@@ -434,29 +440,25 @@ import {Pagination, Autoplay } from "swiper/modules";
       </div>
     </section>
 
-    <section class="transportation  bg-neutral-120">
+    <section class="transportation bg-neutral-120">
       <div class="container pt-20 pb-10 pt-md-30 pb-md-20">
         <div class="d-flex align-items-center gap-10 mb-10 mb-md-20">
-          <h2 class="mb-0 fs-1 fw-bold text-primary-100">
-            交通<br>方式
-          </h2>
+          <h2 class="mb-0 fs-1 fw-bold text-primary-100">交通<br />方式</h2>
           <div class="deco-line" />
         </div>
         <div class="row gap-6 gap-md-0">
           <div class="col-12 mb-md-10">
-            <p class="text-neutral-40 fw-bold">
-              台灣高雄市新興區六角路123號
-            </p>
+            <p class="text-neutral-40 fw-bold">台灣高雄市新興區六角路123號</p>
             <picture>
               <source
                 srcset="@/assets/images/home-map.png"
                 media="(min-width: 576px)"
-              >
+              />
               <img
                 class="w-100"
                 src="@/assets/images/home-map-sm.png"
                 alt="描述地圖中酒店所在的位置"
-              >
+              />
             </picture>
           </div>
           <div class="col-12 col-md-4 text-neutral-0">
@@ -464,9 +466,7 @@ import {Pagination, Autoplay } from "swiper/modules";
               class="mb-2 mb-md-4 display-1 text-primary-100"
               icon="ic:baseline-directions-car"
             />
-            <h5 class="fs-7 fs-md-5 fw-bold">
-              自行開車
-            </h5>
+            <h5 class="fs-7 fs-md-5 fw-bold">自行開車</h5>
             <p class="mb-0 fs-8 fs-md-7">
               如果您選擇自行開車，可以透過國道一號下高雄交流道，往市區方向行駛，並依路標指示即可抵達「享樂酒店」。飯店內設有停車場，讓您停車方便。
             </p>
@@ -476,9 +476,7 @@ import {Pagination, Autoplay } from "swiper/modules";
               class="mb-2 mb-md-4 display-1 text-primary-100"
               icon="ic:baseline-train"
             />
-            <h5 class="fs-7 fs-md-5 fw-bold">
-              高鐵/火車
-            </h5>
+            <h5 class="fs-7 fs-md-5 fw-bold">高鐵/火車</h5>
             <p class="mb-0 fs-8 fs-md-7">
               如果您是搭乘高鐵或火車，可於左營站下車，外頭有計程車站，搭乘計程車約20分鐘即可抵達。或者您也可以轉乘捷運紅線至中央公園站下車，步行約10分鐘便可抵達。
             </p>
@@ -488,9 +486,7 @@ import {Pagination, Autoplay } from "swiper/modules";
               class="mb-2 mb-md-4 display-1 text-primary-100"
               icon="mdi:car-side"
             />
-            <h5 class="fs-7 fs-md-5 fw-bold">
-              禮賓車服務
-            </h5>
+            <h5 class="fs-7 fs-md-5 fw-bold">禮賓車服務</h5>
             <p class="mb-0 fs-8 fs-md-7">
               承億酒店提供禮賓專車接送服務，但因目的地遠近會有不同的收費，請撥打電話將由專人為您服務洽詢專線：(07)123-4567
             </p>
@@ -501,12 +497,12 @@ import {Pagination, Autoplay } from "swiper/modules";
         <source
           srcset="@/assets/images/deco-line-group-horizontal-full.svg"
           media="(min-width:576px)"
-        >
+        />
         <img
           class="w-100"
           src="@/assets/images/deco-line-group-horizontal-sm.svg"
           alt="deco-line-group"
-        >
+        />
       </picture>
     </section>
   </main>

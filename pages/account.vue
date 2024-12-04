@@ -1,8 +1,11 @@
 <script setup>
+definePageMeta({
+    layout:"account-layout"
+})
 </script>
 <template>
   <div>
-    <h1>登入頁</h1>
+    <NuxtPage/>
   </div>
 </template>
 <style scoped></style>
