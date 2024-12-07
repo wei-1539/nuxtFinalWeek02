@@ -19,7 +19,6 @@ const props = defineProps({
 
 const swiperRef = ref(null);
 onMounted(() => {
-  console.log(swiperRef.value,props)
   new Swiper(swiperRef.value, props);
 });
 </script>
