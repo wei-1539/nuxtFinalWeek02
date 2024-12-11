@@ -1,14 +1,14 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   css: ["@/assets/styles/all.scss"],
-  components: {
-    dirs: [
-      {
-        path: "~/components/global",
-        global: true,
-      },
-    ],
-  },
+  // components: {
+  //   dirs: [
+  //     {
+  //       path: "~/components/global",
+  //       global: true,
+  //     },
+  //   ],
+  // },
   vite: {
     css: {
       preprocessorOptions: {

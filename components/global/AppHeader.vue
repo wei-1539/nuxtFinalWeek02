@@ -1,51 +1,45 @@
 <script setup>
-
-
-import { Icon } from '@iconify/vue';
-
+import { Icon } from "@iconify/vue";
 
 const route = useRoute();
-const transparentBgRoute = ['home', 'rooms'];
+const transparentBgRoute = ["home", "rooms"];
 
-const isTransparentRoute = computed(() => transparentBgRoute.includes(route.name));
-
+const isTransparentRoute = computed(() =>
+  transparentBgRoute.includes(route.name)
+);
 
 const isScrolled = ref(false);
 
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 50;
-}
+};
 
 onMounted(() => {
-  window.addEventListener('scroll', handleScroll);
-})
+  window.addEventListener("scroll", handleScroll);
+});
 
 onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll);
-})
-
+  window.removeEventListener("scroll", handleScroll);
+});
 </script>
 
 <template>
   <header
     :class="{
-      'scrolled': isScrolled,
+      scrolled: isScrolled,
       'bg-transparent': isTransparentRoute,
-      'bg-neutral-120': !isTransparentRoute
+      'bg-neutral-120': !isTransparentRoute,
     }"
     class="position-fixed top-0 z-3 w-100"
   >
     <nav class="navbar navbar-expand-md p-0 px-3 py-4 px-md-20 py-md-6">
       <div class="container-fluid justify-content-between p-0">
-        <RouterLink
-          class="navbar-brand p-0"
-          to="/"
-        >
+        <RouterLink class="navbar-brand p-0" to="/">
           <img
             src="@/assets/images/logo-white.svg"
             alt="logo"
             class="logo img-fluid"
-          >
+          />
         </RouterLink>
         <button
           class="navbar-toggler collapsed p-2 text-white border-0 shadow-none"
@@ -56,24 +50,15 @@ onUnmounted(() => {
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <Icon
-            class="fs-1"
-            icon="mdi:close"
-          />
-          <Icon
-            class="fs-5"
-            icon="mdi:menu"
-          />
+          <Icon class="fs-1" icon="mdi:close" />
+          <Icon class="fs-5" icon="mdi:menu" />
         </button>
-        <div
-          id="navbar"
-          class="collapse navbar-collapse"
-        >
+        <div id="navbar" class="collapse navbar-collapse">
           <ul class="navbar-nav gap-4 ms-auto fw-bold">
             <li class="nav-item">
               <RouterLink
                 :to="{
-                  name: 'rooms'
+                  name: 'rooms',
                 }"
                 class="nav-link p-4 text-neutral-0"
               >
@@ -87,48 +72,36 @@ onUnmounted(() => {
                   class="nav-link d-flex gap-2 p-4 text-neutral-0"
                   data-bs-toggle="dropdown"
                 >
-                  <Icon 
-                    class="fs-5"
-                    icon="mdi:account-circle-outline"
-                  />
+                  <Icon class="fs-5" icon="mdi:account-circle-outline" />
                   Jessica
                 </button>
                 <ul
                   class="dropdown-menu py-3 overflow-hidden"
-                  style="right: 0; left: auto; border-radius: 20px;"
+                  style="right: 0; left: auto; border-radius: 20px"
                 >
                   <li>
-                    <a
-                      class="dropdown-item px-6 py-4"
-                      href="#"
-                    >我的帳戶</a>
+                    <a class="dropdown-item px-6 py-4" href="#">我的帳戶</a>
                   </li>
                   <li>
-                    <a
-                      class="dropdown-item px-6 py-4"
-                      href="#"
-                    >登出</a>
+                    <a class="dropdown-item px-6 py-4" href="#">登出</a>
                   </li>
                 </ul>
               </div>
             </li>
             <li class="d-md-none nav-item">
-              <RouterLink
-                to="/"
-                class="nav-link p-4 text-neutral-0"
-              >
+              <RouterLink to="/" class="nav-link p-4 text-neutral-0">
                 會員登入
               </RouterLink>
             </li>
             <li class="nav-item">
-              <RouterLink
+              <NuxtLink
                 :to="{
-                  name: 'rooms'
+                  name: 'rooms',
                 }"
                 class="btn btn-primary-100 px-8 py-4 text-white fw-bold border-0 rounded-3"
               >
                 立即訂房
-              </RouterLink>
+              </NuxtLink>
             </li>
           </ul>
         </div>
@@ -147,7 +120,7 @@ $grid-breakpoints: (
   lg: 992px,
   xl: 1200px,
   xxl: 1400px,
-  xxxl: 1537px
+  xxxl: 1537px,
 );
 
 .logo {
@@ -155,7 +128,7 @@ $grid-breakpoints: (
 }
 
 header {
-  transition: background-color .3s;
+  transition: background-color 0.3s;
 }
 
 header.scrolled {
@@ -168,9 +141,9 @@ header.scrolled {
     visibility: hidden;
 
     svg {
-      transition: opacity .3s;
+      transition: opacity 0.3s;
     }
-    
+
     svg:nth-child(1) {
       position: absolute;
       top: 28px;
@@ -201,7 +174,7 @@ header.scrolled {
     inset: 0;
     opacity: 0;
     overflow: hidden;
-    transition: opacity .05s;
+    transition: opacity 0.05s;
   }
   .navbar-collapse.show {
     opacity: 1;
@@ -220,11 +193,9 @@ header.scrolled {
 
 .dropdown-menu {
   --bs-dropdown-min-width: 16rem;
-  --bs-dropdown-link-hover-color: #BF9D7D;
-  --bs-dropdown-link-hover-bg: #F7F2EE;
+  --bs-dropdown-link-hover-color: #bf9d7d;
+  --bs-dropdown-link-hover-bg: #f7f2ee;
   --bs-dropdown-link-active-color: #fff;
-  --bs-dropdown-link-active-bg: #BF9D7D;
+  --bs-dropdown-link-active-bg: #bf9d7d;
 }
-
-
 </style>
