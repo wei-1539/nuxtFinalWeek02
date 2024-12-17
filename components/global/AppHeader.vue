@@ -21,6 +21,9 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener("scroll", handleScroll);
 });
+
+const authStore = useAuthStore();
+console.log(authStore.token);
 </script>
 
 <template>
@@ -34,13 +37,13 @@ onUnmounted(() => {
   >
     <nav class="navbar navbar-expand-md p-0 px-3 py-4 px-md-20 py-md-6">
       <div class="container-fluid justify-content-between p-0">
-        <RouterLink class="navbar-brand p-0" to="/">
+        <NuxtLink class="navbar-brand p-0" to="/">
           <img
             src="@/assets/images/logo-white.svg"
             alt="logo"
             class="logo img-fluid"
           />
-        </RouterLink>
+        </NuxtLink>
         <button
           class="navbar-toggler collapsed p-2 text-white border-0 shadow-none"
           type="button"
@@ -56,16 +59,11 @@ onUnmounted(() => {
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="navbar-nav gap-4 ms-auto fw-bold">
             <li class="nav-item">
-              <RouterLink
-                :to="{
-                  name: 'rooms',
-                }"
-                class="nav-link p-4 text-neutral-0"
-              >
+              <NuxtLink to="/rooms" class="nav-link p-4 text-neutral-0">
                 客房旅宿
-              </RouterLink>
+              </NuxtLink>
             </li>
-            <li class="d-none d-md-block nav-item">
+            <li class="nav-item" v-show="authStore.token !== null">
               <div class="btn-group">
                 <button
                   type="button"
@@ -80,18 +78,26 @@ onUnmounted(() => {
                   style="right: 0; left: auto; border-radius: 20px"
                 >
                   <li>
-                    <a class="dropdown-item px-6 py-4" href="#">我的帳戶</a>
+                    <NuxtLink class="dropdown-item px-6 py-4" to="/user"
+                      >我的帳戶</NuxtLink
+                    >
                   </li>
                   <li>
-                    <a class="dropdown-item px-6 py-4" href="#">登出</a>
+                    <div
+                      class="dropdown-item px-6 py-4"
+                      @click="authStore.logout"
+                    >
+                      登出
+                    </div>
                   </li>
                 </ul>
               </div>
             </li>
-            <li class="d-md-none nav-item">
-              <RouterLink to="/" class="nav-link p-4 text-neutral-0">
+            <!-- <li class="d-md-none nav-item"> -->
+            <li class="nav-item" v-show="authStore.token === null">
+              <NuxtLink to="/account/login" class="nav-link p-4 text-neutral-0">
                 會員登入
-              </RouterLink>
+              </NuxtLink>
             </li>
             <li class="nav-item">
               <NuxtLink

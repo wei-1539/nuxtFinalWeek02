@@ -23,6 +23,9 @@ export default defineNuxtConfig({
   },
   // 加入 Pinia 模組
   modules: ["@pinia/nuxt", ],
+  pinia: {
+    storesDirs: ['./stores/**'], // 自動匯入 /stores 目錄下的所有 store
+  },
   compatibilityDate: "2024-11-01",
   devtools: { enabled: true },
 });

@@ -60,6 +60,7 @@ const isEmailAndPasswordValid = ref(false);
             class="form-control p-4 text-neutral-100 fw-medium border-neutral-40"
             placeholder="hello@exsample.com"
             type="email"
+            required
           />
         </div>
         <div class="mb-4 fs-8 fs-md-7">
@@ -71,6 +72,7 @@ const isEmailAndPasswordValid = ref(false);
             class="form-control p-4 text-neutral-100 fw-medium border-neutral-40"
             placeholder="請輸入密碼"
             type="password"
+            required
           />
         </div>
         <div class="mb-10 fs-8 fs-md-7">
@@ -82,6 +84,7 @@ const isEmailAndPasswordValid = ref(false);
             class="form-control p-4 text-neutral-100 fw-medium border-neutral-40"
             placeholder="請再輸入一次密碼"
             type="password"
+            required
           />
         </div>
         <button

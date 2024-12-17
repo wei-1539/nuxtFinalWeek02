@@ -1,83 +1,102 @@
 <script setup>
+const authStore = useAuthStore();
+definePageMeta({
+  layout: ["account-layout"],
+});
+const mail = ref("");
+const password = ref("");
+// console.log("store login", authStore.login);
+const handleLogin = async () => {
+  console.log("login 值行中");
+  try {
+    await authStore.login(mail.value, password.value);
+    navigateTo("/");
+  } catch (err) {
+    alert("登入失敗，請檢查帳號密碼");
+  }
+};
 </script>
 <template>
-<div class="px-5 px-md-0">
+  <div class="px-5 px-md-0">
     <div class="mb-10">
       <p class="mb-2 text-primary-100 fs-8 fs-md-7 fw-bold">
         享樂酒店，誠摯歡迎
       </p>
-      <h1 class="text-neutral-0 fw-bold">
-        立即開始旅程
-      </h1>
+      <h1 class="text-neutral-0 fw-bold">立即開始旅程</h1>
     </div>
 
-    <form class="mb-10">
+    <form class="mb-10" @submit.prevent="handleLogin">
       <div class="mb-4 fs-8 fs-md-7">
-        <label
-          class="mb-2 text-neutral-0 fw-bold"
-          for="email"
-        >
+        <label class="mb-2 text-neutral-0 fw-bold" for="email">
           電子信箱
         </label>
-        <input
+        <!-- <input
           id="email"
           class="form-control p-4 text-neutral-100 fw-medium border-neutral-40"
           value="jessica@sample.com"
           placeholder="請輸入信箱"
           type="email"
-        >
+        /> -->
+        <input
+          id="email"
+          class="form-control p-4 text-neutral-100 fw-medium border-neutral-40"
+          placeholder="請輸入信箱"
+          type="email"
+          v-model="mail"
+        />
       </div>
       <div class="mb-4 fs-8 fs-md-7">
-        <label
-          class="mb-2 text-neutral-0 fw-bold"
-          for="password"
-        >
-          密碼
-        </label>
-        <input
+        <label class="mb-2 text-neutral-0 fw-bold" for="password"> 密碼 </label>
+        <!-- <input
           id="password"
           class="form-control p-4 text-neutral-100 fw-medium border-neutral-40"
           value="jessica@sample.com"
           placeholder="請輸入密碼"
           type="password"
-        >
+        /> -->
+        <input
+          id="password"
+          class="form-control p-4 text-neutral-100 fw-medium border-neutral-40"
+          placeholder="請輸入密碼"
+          type="password"
+          v-model="password"
+        />
       </div>
-      <div class="d-flex justify-content-between align-items-center mb-10 fs-8 fs-md-7">
+      <div
+        class="d-flex justify-content-between align-items-center mb-10 fs-8 fs-md-7"
+      >
         <div class="form-check d-flex align-items-end gap-2 text-neutral-0">
           <input
             id="remember"
             class="form-check-input"
             type="checkbox"
             value=""
-          >
-          <label
-            class="form-check-label fw-bold"
-            for="remember"
-          >
+          />
+          <label class="form-check-label fw-bold" for="remember">
             記住帳號
           </label>
         </div>
         <button
           class="text-primary-100 fw-bold text-decoration-underline bg-transparent border-0"
-          type="button"
+          type="submit"
         >
           忘記密碼？
         </button>
       </div>
 
       <!-- 為方便測試先改為連結 -->
-      <NuxtLink
+      <!-- <NuxtLink
         to="/"
         class="btn btn-primary-100 w-100 py-4 text-neutral-0 fw-bold"
       >
         會員登入
-      </NuxtLink>
-      <!-- <button
+      </NuxtLink> -->
+      <button
         class="btn btn-primary-100 w-100 py-4 text-neutral-0 fw-bold"
-        type="button"
+        type="submit"
       >
         會員登入
-      </button> -->
+      </button>
     </form>
 
     <p class="mb-0 fs-8 fs-md-7">
@@ -101,9 +120,8 @@ $grid-breakpoints: (
   lg: 992px,
   xl: 1200px,
   xxl: 1400px,
-  xxxl: 1537px
+  xxxl: 1537px,
 );
-
 
 input[type="password"] {
   font: small-caption;
@@ -126,7 +144,7 @@ input::placeholder {
 }
 
 .form-check-input:checked {
-  background-color: #BF9D7D;
-  border-color: #BF9D7D;
+  background-color: #bf9d7d;
+  border-color: #bf9d7d;
 }
 </style>
