@@ -7,9 +7,9 @@ const mail = ref("");
 const password = ref("");
 // console.log("store login", authStore.login);
 const handleLogin = async () => {
-  console.log("login 值行中");
   try {
     await authStore.login(mail.value, password.value);
+    await authStore.getUserObject();
     navigateTo("/");
   } catch (err) {
     alert("登入失敗，請檢查帳號密碼");

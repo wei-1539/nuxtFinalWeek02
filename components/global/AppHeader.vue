@@ -16,6 +16,7 @@ const handleScroll = () => {
 
 onMounted(() => {
   window.addEventListener("scroll", handleScroll);
+  authStore.getUserObject();
 });
 
 onUnmounted(() => {
@@ -23,7 +24,7 @@ onUnmounted(() => {
 });
 
 const authStore = useAuthStore();
-console.log(authStore.token);
+console.log(authStore.isAuthenticated);
 </script>
 
 <template>
@@ -63,7 +64,7 @@ console.log(authStore.token);
                 客房旅宿
               </NuxtLink>
             </li>
-            <li class="nav-item" v-show="authStore.token !== null">
+            <li class="nav-item" v-if="authStore.isAuthenticated">
               <div class="btn-group">
                 <button
                   type="button"
@@ -71,14 +72,16 @@ console.log(authStore.token);
                   data-bs-toggle="dropdown"
                 >
                   <Icon class="fs-5" icon="mdi:account-circle-outline" />
-                  Jessica
+                  {{ authStore.userObject.name }}
                 </button>
                 <ul
                   class="dropdown-menu py-3 overflow-hidden"
                   style="right: 0; left: auto; border-radius: 20px"
                 >
                   <li>
-                    <NuxtLink class="dropdown-item px-6 py-4" to="/user"
+                    <NuxtLink
+                      class="dropdown-item px-6 py-4"
+                      :to="`/user/${authStore.userObject._id}/profile`"
                       >我的帳戶</NuxtLink
                     >
                   </li>
@@ -94,7 +97,7 @@ console.log(authStore.token);
               </div>
             </li>
             <!-- <li class="d-md-none nav-item"> -->
-            <li class="nav-item" v-show="authStore.token === null">
+            <li class="nav-item" v-else>
               <NuxtLink to="/account/login" class="nav-link p-4 text-neutral-0">
                 會員登入
               </NuxtLink>

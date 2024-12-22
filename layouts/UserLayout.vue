@@ -1,5 +1,6 @@
 <script setup>
 const userId = "0056";
+const authStore = useAuthStore();
 </script>
 <template>
   <div>
@@ -37,7 +38,7 @@ const userId = "0056";
           <ul class="nav mb-10 mb-md-20 fw-bold">
             <li class="nav-item position-relative">
               <NuxtLink
-                :to="`/user/${userId}/profile`"
+                :to="`/user/${authStore.userObject._id}/profile`"
                 exact-active-class="text-primary-100"
                 class="nav-link px-6 py-4 text-white"
               >
@@ -46,7 +47,7 @@ const userId = "0056";
             </li>
             <li class="nav-item position-relative">
               <NuxtLink
-                :to="`/user/${userId}/order`"
+                :to="`/user/${authStore.userObject._id}/order`"
                 exact-active-class="text-primary-100"
                 class="nav-link px-6 py-4 text-white"
               >

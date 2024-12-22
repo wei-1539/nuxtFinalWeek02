@@ -7,12 +7,13 @@ import { useScreens } from "vue-screen-utils";
 
 // import Modal from "bootstrap/js/dist/modal";
 import { Icon } from "@iconify/vue";
-const { $bootstrap } = useNuxtApp();
+// const { $bootstrap } = useNuxtApp();
 
 const modal = ref(null);
 
-onMounted(() => {
-  modal.value = $bootstrap.Modal(document.getElementById("dateModal"));
+onMounted(async () => {
+  const { default: BootstrapModal } = await import("bootstrap/js/dist/modal");
+  modal.value = new BootstrapModal(document.getElementById("dateModal"));
 });
 
 const openModal = () => {

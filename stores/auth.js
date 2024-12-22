@@ -3,19 +3,21 @@ export const useAuthStore = defineStore("auth", () => {
   // 填入 token
   const token = ref(null);
 
-  const isAuthenticated = computed((token) => !!token.value);
+  const tokenCookie = useCookie("auth_token");
+  // 檢查使否登入
+  const isAuthenticated = computed(() => !!tokenCookie.value);
 
   // 設定cookie
   const setToken = (getToken) => {
     token.value = getToken;
-    const tokenCookie = useCookie("auth_token");
+
     tokenCookie.value = token.value;
   };
 
   // 移除cookie
   const clearToken = () => {
     token.value = null;
-    const tokenCookie = useCookie("auth_token");
+
     tokenCookie.value = token.value;
   };
 
@@ -38,19 +40,34 @@ export const useAuthStore = defineStore("auth", () => {
     }
   };
 
-  const initializeToken = () => {
-    const tokenCookie = useCookie("auth_token");
-    if (token.value) {
-      token.value = tokenCookie.value;
-    }
-  };
-
   const logout = () => {
     clearToken();
   };
+
+  // 取得使用者資料
+  const userObject = ref({});
+  const getUserObject = async () => {
+    if (!tokenCookie.value) return;
+    try {
+      const { $axios } = useNuxtApp();
+
+      const response = await $axios.get("/api/v1/user/", {
+        headers: {
+          Authorization: `${tokenCookie.value}`,
+        },
+      });
+      userObject.value = response.data.result;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return {
     token,
     login,
     logout,
+    getUserObject,
+    userObject,
+    isAuthenticated,
   };
 });

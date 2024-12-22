@@ -1,6 +1,51 @@
 <script setup>
+definePageMeta({
+  name: "home",
+});
 import { Pagination, Autoplay } from "swiper/modules";
 import { Icon } from "@iconify/vue";
+
+const roomSwiper = ref(null);
+
+const slidePrev = () => {
+  roomSwiper.value.$el.swiper.slidePrev();
+};
+
+const slideNext = () => {
+  roomSwiper.value.$el.swiper.slideNext();
+};
+
+// import { useRoomStore } from "~/stores/room";
+const { $axios } = useNuxtApp();
+//取出房型資料
+const roomStore = useRoomStore();
+const { roomData } = storeToRefs(roomStore);
+
+await roomStore.getRoomData();
+
+// 取的 最新消息
+const newsData = ref();
+const getNewsData = async () => {
+  try {
+    const response = await $axios.get("/api/v1/home/news/");
+    newsData.value = response.data.result;
+  } catch (err) {
+    console.log(err);
+  }
+};
+await getNewsData();
+
+// 取得食物資料
+const foodData = ref();
+const getFoodData = async () => {
+  try {
+    const response = await $axios.get("/api/v1/home/culinary/");
+    foodData.value = response.data.result;
+  } catch (err) {
+    console.log(err);
+  }
+};
+await getFoodData();
 </script>
 <template>
   <main class="overflow-hidden">
@@ -14,17 +59,10 @@ import { Icon } from "@iconify/vue";
         }"
         :modules="[Pagination, Autoplay]"
       >
-        <SwiperSlide v-for="(num, index) in 5" :key="index">
+        <SwiperSlide v-for="item in roomData" :key="item._id">
           <picture>
-            <source
-              srcset="@/assets/images/home-hero.png"
-              media="(min-width:576px)"
-            />
-            <img
-              class="hero-img"
-              src="@/assets/images/home-hero-sm.png"
-              alt="hero banner"
-            />
+            <source :srcset="item.imageUrl" media="(min-width:576px)" />
+            <img class="hero-img" :src="item.imageUrl" alt="hero banner" />
           </picture>
         </SwiperSlide>
       </Swiper>
@@ -73,33 +111,37 @@ import { Icon } from "@iconify/vue";
             </div>
           </div>
           <div class="col-12 col-md-10 d-flex flex-column gap-10">
-            <div class="card bg-transparent border-0">
+            <div
+              class="card bg-transparent border-0"
+              v-for="item in newsData"
+              :key="item._id"
+            >
               <div
                 class="d-flex flex-column flex-md-row align-items-center gap-6"
               >
                 <picture>
                   <source
-                    srcset="@/assets/images/home-news-1.png"
+                    :srcset="`${item.image}`"
                     media="(min-width: 576px)"
                   />
                   <img
-                    src="@/assets/images/home-news-sm-1.png"
+                    :src="`${item.image}`"
                     class="w-100 rounded-3"
                     alt="可看見海景及泳池的套房"
                   />
                 </picture>
                 <div class="card-body p-0">
                   <h3 class="card-title mb-2 mb-md-6 fw-bold">
-                    秋季旅遊，豪華享受方案
+                    {{ item.title }}
                   </h3>
                   <p class="card-text text-neutral-80 fs-8 fs-md-7 fw-medium">
-                    秋天就是要來場豪華的旅遊！我們為您準備了一系列的秋季特別方案，包括舒適的住宿、美食饗宴，以及精彩的活動。不論您是想來一趟浪漫之旅，還是想和家人共度美好時光，都能在這裡找到最適合的方案。
+                    {{ item.description }}
                   </p>
                 </div>
               </div>
             </div>
 
-            <div class="card bg-transparent border-0">
+            <!-- <div class="card bg-transparent border-0">
               <div
                 class="d-flex flex-column flex-md-row align-items-center gap-6"
               >
@@ -111,7 +153,7 @@ import { Icon } from "@iconify/vue";
                   <img
                     src="@/assets/images/home-news-sm-2.png"
                     class="w-100 rounded-3"
-                    alt="在雙人床上的兩顆灰色枕頭"
+                    :alt="item.title"
                   />
                 </picture>
                 <div class="card-body p-0">
@@ -147,7 +189,7 @@ import { Icon } from "@iconify/vue";
                   </p>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -267,17 +309,18 @@ import { Icon } from "@iconify/vue";
           <div class="deco-line" />
         </div>
         <div class="row flex-nowrap overflow-x-auto">
-          <div class="col-10 col-md-6 col-xl-4">
+          <div
+            class="col-10 col-md-6 col-xl-4"
+            v-for="item in foodData"
+            :key="item._id"
+          >
             <div class="card position-relative border-0 rounded-3">
               <picture>
-                <source
-                  srcset="@/assets/images/home-food-1.png"
-                  media="(min-width: 576px)"
-                />
+                <source :srcset="item.image" media="(min-width: 576px)" />
                 <img
                   class="w-100 rounded-3"
-                  src="@/assets/images/home-food-sm-1.png"
-                  alt="海霸"
+                  :src="item.image"
+                  :alt="item.title"
                 />
               </picture>
               <div
@@ -286,21 +329,21 @@ import { Icon } from "@iconify/vue";
                 <div
                   class="d-flex justify-content-between align-items-center mb-4 mb-md-6"
                 >
-                  <h5 class="card-title mb-0 fw-bold">海霸</h5>
+                  <h5 class="card-title mb-0 fw-bold">{{ item.title }}</h5>
                   <div
                     class="d-flex justify-content-between gap-4 text-neutral-40 fs-8 fs-md-7"
                   >
-                    <span class="fw-bold">SUN-MON</span>
-                    <span class="fw-bold">11:00 - 20:30</span>
+                    <span class="fw-bold">{{ item.diningTime }}</span>
+                    <!-- <span class="fw-bold">11:00 - 20:30</span> -->
                   </div>
                 </div>
                 <p class="card-text fs-8 fs-md-7">
-                  以新鮮海產料理聞名，我們的專業廚師選用高雄當地的海鮮，每一道菜都充滿海洋的鮮美與清甜。無論是烤魚、蒸蝦還是煮蛤蜊，都能讓您品嚐到最新鮮的海洋風味。
+                  {{ item.description }}
                 </p>
               </div>
             </div>
           </div>
-
+          <!-- 
           <div class="col-10 col-md-6 col-xl-4">
             <div class="card position-relative border-0 rounded-3">
               <picture>
@@ -435,7 +478,7 @@ import { Icon } from "@iconify/vue";
                 </p>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </section>

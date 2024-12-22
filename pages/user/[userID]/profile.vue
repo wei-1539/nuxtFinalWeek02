@@ -1,4 +1,10 @@
 <script setup>
+const { userObject } = useAuthStore();
+definePageMeta({
+  middleware: ["auth"],
+  layout: "user-layout",
+});
+
 const isEditPassword = ref(false);
 const isEditProfile = ref(false);
 </script>
@@ -14,7 +20,7 @@ const isEditProfile = ref(false);
             <p class="mb-2 text-neutral-80 fw-medium">電子信箱</p>
             <span
               class="form-control pe-none p-0 text-neutral-100 fw-bold border-0"
-              >Jessica@exsample.com</span
+              >{{ userObject.email }}</span
             >
           </div>
 
@@ -122,7 +128,7 @@ const isEditProfile = ref(false);
                 'p-4': isEditProfile,
               }"
               type="text"
-              value="Jessica Ｗang"
+              :value="`${userObject.name}`"
             />
           </div>
 
@@ -146,7 +152,7 @@ const isEditProfile = ref(false);
                 'p-4': isEditProfile,
               }"
               type="tel"
-              value="+886 912 345 678"
+              :value="`+886 912 345 678`"
             />
           </div>
 

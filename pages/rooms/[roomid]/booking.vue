@@ -1,28 +1,132 @@
 <script setup>
 // import { ref } from "vue";
 // import { useRouter } from "vue-router";
+definePageMeta({
+  middleware: ["auth"],
+});
+
+// import { Body } from "#build/components";
 import BookingLoading from "@/components/rooms/BookingLoading.vue";
 import { Icon } from "@iconify/vue";
 
 const router = useRouter();
+const route = useRoute();
 
 const goBack = () => {
   router.back();
 };
 const isLoading = ref(false);
 
-const confirmBooking = () => {
-  isLoading.value = true;
+// const confirmBooking = () => {
+//   isLoading.value = true;
 
-  setTimeout(() => {
-    isLoading.value = false;
-    router.push({
-      name: "booking-confirmation",
-      params: {
-        bookingId: "HH2302183151222",
+//   setTimeout(() => {
+//     isLoading.value = false;
+//     router.push({
+//       name: "booking-confirmation",
+//       params: {
+//         bookingId: "HH2302183151222",
+//       },
+//     });
+//   }, 1500);
+// };
+
+// 取出query
+const daysFormatOnMobile = (date) => date.replace(/-/g, "/");
+const bookingDetails = ref({
+  roomId: route.params.roomid,
+  checkIn: daysFormatOnMobile(route.query.checkIn),
+  checkOut: daysFormatOnMobile(route.query.checkOut),
+  people: route.query.people,
+});
+// 取出房型詳細頁面
+const roomStore = useRoomStore();
+const { detailRoomData } = storeToRefs(roomStore);
+await roomStore.getDetailRoomData(route.params.roomid);
+
+// 計算幾天
+const startDay = ref(route.query.checkIn);
+const endDay = ref(route.query.checkOut);
+const daysCount = computed(() => {
+  const differenceTime =
+    new Date(endDay.value).getTime() - new Date(startDay.value).getTime();
+
+  const differenceDay = Math.round(differenceTime / (1000 * 60 * 60 * 24));
+
+  return differenceDay;
+});
+
+// 訂房人資訊
+const authStore = useAuthStore();
+const { userObject } = storeToRefs(authStore);
+
+// 自動帶入會員資料
+const autoUserDetail = async () => {
+  await authStore.getUserObject();
+
+  memberData.value = {
+    name: userObject.value.name,
+    phone: userObject.value.phone,
+    email: userObject.value.email,
+    zipcode: userObject.value.address.zipcode,
+    address: userObject.value.address.detail,
+  };
+};
+
+// 送出訂單
+const tokenCookie = useCookie("auth_token");
+const { $axios } = useNuxtApp();
+const memberData = ref({
+  name: "",
+  phone: "",
+  email: "",
+  zipcode: "",
+  address: "",
+});
+
+const postOrderData = async () => {
+  isLoading.value = true;
+  const payload = {
+    roomId: bookingDetails.value.roomId,
+    checkInDate: bookingDetails.value.checkIn,
+    checkOutDate: bookingDetails.value.checkOut,
+    peopleNum: bookingDetails.value.people,
+    userInfo: {
+      address: {
+        zipcode: memberData.value.zipcode,
+        detail: memberData.value.address,
       },
+      name: memberData.value.name,
+      phone: memberData.value.phone,
+      email: memberData.value.email,
+    },
+  };
+  // console.log(JSON.stringify(payload));
+
+  try {
+    // const response = await $axios.post("/api/v1/orders/", {
+    //   header: {
+    //     authorization: tokenCookie.value,
+    //   },
+    //   body: JSON.stringify(payload),
+    // });
+    const response = await $fetch("https://nuxr3.zeabur.app/api/v1/orders/", {
+      method: "POST",
+      headers: {
+        Authorization: `${tokenCookie.value}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
     });
-  }, 1500);
+    // console.log(response);
+    router.push({
+      path: `/booking/confirmation/${response.result._id}`,
+    });
+  } catch (err) {
+    console.log(err);
+  } finally {
+    isLoading.value = false;
+  }
 };
 </script>
 
@@ -51,7 +155,7 @@ const confirmBooking = () => {
                 >
                   <div>
                     <h3 class="title-deco mb-2 fs-7 fw-bold">選擇房型</h3>
-                    <p class="mb-0 fw-medium">尊爵雙人房</p>
+                    <p class="mb-0 fw-medium">{{ detailRoomData.name }}</p>
                   </div>
                   <button
                     class="bg-transparent border-0 fw-bold text-decoration-underline"
@@ -65,8 +169,12 @@ const confirmBooking = () => {
                 >
                   <div>
                     <h3 class="title-deco mb-2 fs-7 fw-bold">訂房日期</h3>
-                    <p class="mb-2 fw-medium">入住：12 月 4 日星期二</p>
-                    <p class="mb-0 fw-medium">退房：12 月 6 日星期三</p>
+                    <p class="mb-2 fw-medium">
+                      入住：{{ bookingDetails.checkIn }}
+                    </p>
+                    <p class="mb-0 fw-medium">
+                      退房：{{ bookingDetails.checkOut }}
+                    </p>
                   </div>
                   <button
                     class="bg-transparent border-0 fw-bold text-decoration-underline"
@@ -80,7 +188,7 @@ const confirmBooking = () => {
                 >
                   <div>
                     <h3 class="title-deco mb-2 fs-7 fw-bold">房客人數</h3>
-                    <p class="mb-0 fw-medium">2 人</p>
+                    <p class="mb-0 fw-medium">{{ bookingDetails.people }} 人</p>
                   </div>
                   <button
                     class="bg-transparent border-0 fw-bold text-decoration-underline"
@@ -104,6 +212,7 @@ const confirmBooking = () => {
                 <button
                   class="text-primary-100 bg-transparent border-0 fw-bold text-decoration-underline"
                   type="button"
+                  @click="autoUserDetail"
                 >
                   套用會員資料
                 </button>
@@ -119,6 +228,7 @@ const confirmBooking = () => {
                     type="text"
                     class="form-control p-4 fs-8 fs-md-7 rounded-3"
                     placeholder="請輸入姓名"
+                    v-model="memberData.name"
                   />
                 </div>
 
@@ -131,6 +241,7 @@ const confirmBooking = () => {
                     type="tel"
                     class="form-control p-4 fs-8 fs-md-7 rounded-3"
                     placeholder="請輸入手機號碼"
+                    v-model="memberData.phone"
                   />
                 </div>
 
@@ -143,6 +254,7 @@ const confirmBooking = () => {
                     type="email"
                     class="form-control p-4 fs-8 fs-md-7 rounded-3"
                     placeholder="請輸入電子信箱"
+                    v-model="memberData.email"
                   />
                 </div>
 
@@ -150,7 +262,7 @@ const confirmBooking = () => {
                   <label for="address" class="form-label fs-8 fs-md-7 fw-bold"
                     >地址</label
                   >
-                  <div className="d-flex gap-2 mb-4">
+                  <div class="d-flex gap-2 mb-4">
                     <select
                       class="form-select w-50 p-4 text-neutral-80 fs-8 fs-md-7 fw-medium rounded-3"
                     >
@@ -166,12 +278,22 @@ const confirmBooking = () => {
                       <option selected value="新興區">新興區</option>
                     </select>
                   </div>
-                  <input
-                    id="address"
-                    type="text"
-                    class="form-control p-4 fs-8 fs-md-7 rounded-3"
-                    placeholder="請輸入詳細地址"
-                  />
+                  <div class="d-flex gap-2">
+                    <input
+                      id="zipcode"
+                      type="number"
+                      class="form-control w-25 p-4 text-neutral-80 fs-8 fs-md-7 fw-medium rounded-3"
+                      placeholder="郵遞區號"
+                      v-model="memberData.zipcode"
+                    />
+                    <input
+                      id="address"
+                      type="text"
+                      class="form-control p-4 fs-8 fs-md-7 rounded-3"
+                      placeholder="請輸入詳細地址"
+                      v-model="memberData.address"
+                    />
+                  </div>
                 </div>
               </div>
             </section>
@@ -196,7 +318,7 @@ const confirmBooking = () => {
                         icon="fluent:slide-size-24-filled"
                       />
                       <p class="mb-0 fw-bold text-neutral-80 text-nowrap">
-                        24 坪
+                        {{ detailRoomData.areaInfo }}
                       </p>
                     </li>
                     <li
@@ -207,7 +329,7 @@ const confirmBooking = () => {
                         icon="material-symbols:king-bed"
                       />
                       <p class="mb-0 fw-bold text-neutral-80 text-nowrap">
-                        1 張大床
+                        {{ detailRoomData.bedInfo }}
                       </p>
                     </li>
                     <li
@@ -218,7 +340,7 @@ const confirmBooking = () => {
                         icon="ic:baseline-person"
                       />
                       <p class="mb-0 fw-bold text-neutral-80 text-nowrap">
-                        2-4 人
+                        最多 {{ detailRoomData.maxPeople }} 人
                       </p>
                     </li>
                   </ul>
@@ -233,40 +355,18 @@ const confirmBooking = () => {
                   <ul
                     class="d-flex flex-wrap gap-6 gap-md-10 p-6 fs-8 fs-md-7 bg-neutral-0 rounded-3 list-unstyled"
                   >
-                    <li class="d-flex gap-2">
+                    <li
+                      v-for="(item, ind) in detailRoomData.layoutInfo"
+                      :key="ind"
+                      class="d-flex gap-2"
+                    >
                       <Icon
                         class="fs-5 text-primary-100"
                         icon="material-symbols:check"
                       />
-                      <p class="mb-0 text-neutral-80 fw-bold">市景</p>
-                    </li>
-                    <li class="d-flex gap-2">
-                      <Icon
-                        class="fs-5 text-primary-100"
-                        icon="material-symbols:check"
-                      />
-                      <p class="mb-0 text-neutral-80 fw-bold">獨立衛浴</p>
-                    </li>
-                    <li class="d-flex gap-2">
-                      <Icon
-                        class="fs-5 text-primary-100"
-                        icon="material-symbols:check"
-                      />
-                      <p class="mb-0 text-neutral-80 fw-bold">客廳</p>
-                    </li>
-                    <li class="d-flex gap-2">
-                      <Icon
-                        class="fs-5 text-primary-100"
-                        icon="material-symbols:check"
-                      />
-                      <p class="mb-0 text-neutral-80 fw-bold">書房</p>
-                    </li>
-                    <li class="d-flex gap-2">
-                      <Icon
-                        class="fs-5 text-primary-100"
-                        icon="material-symbols:check"
-                      />
-                      <p class="mb-0 text-neutral-80 fw-bold">樓層電梯</p>
+                      <p class="mb-0 text-neutral-80 fw-bold">
+                        {{ item.title }}
+                      </p>
                     </li>
                   </ul>
                 </section>
@@ -280,75 +380,18 @@ const confirmBooking = () => {
                   <ul
                     class="d-flex flex-wrap row-gap-2 column-gap-10 p-6 mb-0 fs-8 fs-md-7 bg-neutral-0 rounded-3 list-unstyled"
                   >
-                    <li class="flex-item d-flex gap-2">
+                    <li
+                      v-for="(item, ind) in detailRoomData.facilityInfo"
+                      :key="ind"
+                      class="flex-item d-flex gap-2"
+                    >
                       <Icon
                         class="fs-5 text-primary-100"
                         icon="material-symbols:check"
                       />
-                      <p class="mb-0 text-neutral-80 fw-bold">平面電視</p>
-                    </li>
-                    <li class="flex-item d-flex gap-2">
-                      <Icon
-                        class="fs-5 text-primary-100"
-                        icon="material-symbols:check"
-                      />
-                      <p class="mb-0 text-neutral-80 fw-bold">吹風機</p>
-                    </li>
-                    <li class="flex-item d-flex gap-2">
-                      <Icon
-                        class="fs-5 text-primary-100"
-                        icon="material-symbols:check"
-                      />
-                      <p class="mb-0 text-neutral-80 fw-bold">冰箱</p>
-                    </li>
-                    <li class="flex-item d-flex gap-2">
-                      <Icon
-                        class="fs-5 text-primary-100"
-                        icon="material-symbols:check"
-                      />
-                      <p class="mb-0 text-neutral-80 fw-bold">熱水壺</p>
-                    </li>
-                    <li class="flex-item d-flex gap-2">
-                      <Icon
-                        class="fs-5 text-primary-100"
-                        icon="material-symbols:check"
-                      />
-                      <p class="mb-0 text-neutral-80 fw-bold">檯燈</p>
-                    </li>
-                    <li class="flex-item d-flex gap-2">
-                      <Icon
-                        class="fs-5 text-primary-100"
-                        icon="material-symbols:check"
-                      />
-                      <p class="mb-0 text-neutral-80 fw-bold">衣櫃</p>
-                    </li>
-                    <li class="flex-item d-flex gap-2">
-                      <Icon
-                        class="fs-5 text-primary-100"
-                        icon="material-symbols:check"
-                      />
-                      <p class="mb-0 text-neutral-80 fw-bold">除濕機</p>
-                    </li>
-                    <li class="flex-item d-flex gap-2">
-                      <Icon
-                        class="fs-5 text-primary-100"
-                        icon="material-symbols:check"
-                      />
-                      <p class="mb-0 text-neutral-80 fw-bold">浴缸</p>
-                    </li>
-                    <li class="flex-item d-flex gap-2">
-                      <Icon
-                        class="fs-5 text-primary-100"
-                        icon="material-symbols:check"
-                      />
-                      <p class="mb-0 text-neutral-80 fw-bold">書桌</p>
-                    </li>
-                    <li class="flex-item d-flex gap-2">
-                      <Icon
-                        class="fs-5 text-primary-100"
-                        icon="material-symbols:check"
-                      />
-                      <p class="mb-0 text-neutral-80 fw-bold">音響</p>
+                      <p class="mb-0 text-neutral-80 fw-bold">
+                        {{ item.title }}
+                      </p>
                     </li>
                   </ul>
                 </section>
@@ -362,75 +405,18 @@ const confirmBooking = () => {
                   <ul
                     class="d-flex flex-wrap row-gap-2 column-gap-10 p-6 mb-0 fs-8 fs-md-7 bg-neutral-0 rounded-3 list-unstyled"
                   >
-                    <li class="flex-item d-flex gap-2">
+                    <li
+                      v-for="(item, ind) in detailRoomData.amenityInfo"
+                      :key="ind"
+                      class="flex-item d-flex gap-2"
+                    >
                       <Icon
                         class="fs-5 text-primary-100"
                         icon="material-symbols:check"
                       />
-                      <p class="mb-0 text-neutral-80 fw-bold">衛生紙</p>
-                    </li>
-                    <li class="flex-item d-flex gap-2">
-                      <Icon
-                        class="fs-5 text-primary-100"
-                        icon="material-symbols:check"
-                      />
-                      <p class="mb-0 text-neutral-80 fw-bold">拖鞋</p>
-                    </li>
-                    <li class="flex-item d-flex gap-2">
-                      <Icon
-                        class="fs-5 text-primary-100"
-                        icon="material-symbols:check"
-                      />
-                      <p class="mb-0 text-neutral-80 fw-bold">沐浴用品</p>
-                    </li>
-                    <li class="flex-item d-flex gap-2">
-                      <Icon
-                        class="fs-5 text-primary-100"
-                        icon="material-symbols:check"
-                      />
-                      <p class="mb-0 text-neutral-80 fw-bold">清潔用品</p>
-                    </li>
-                    <li class="flex-item d-flex gap-2">
-                      <Icon
-                        class="fs-5 text-primary-100"
-                        icon="material-symbols:check"
-                      />
-                      <p class="mb-0 text-neutral-80 fw-bold">刮鬍刀</p>
-                    </li>
-                    <li class="flex-item d-flex gap-2">
-                      <Icon
-                        class="fs-5 text-primary-100"
-                        icon="material-symbols:check"
-                      />
-                      <p class="mb-0 text-neutral-80 fw-bold">吊衣架</p>
-                    </li>
-                    <li class="flex-item d-flex gap-2">
-                      <Icon
-                        class="fs-5 text-primary-100"
-                        icon="material-symbols:check"
-                      />
-                      <p class="mb-0 text-neutral-80 fw-bold">浴巾</p>
-                    </li>
-                    <li class="flex-item d-flex gap-2">
-                      <Icon
-                        class="fs-5 text-primary-100"
-                        icon="material-symbols:check"
-                      />
-                      <p class="mb-0 text-neutral-80 fw-bold">刷牙用品</p>
-                    </li>
-                    <li class="flex-item d-flex gap-2">
-                      <Icon
-                        class="fs-5 text-primary-100"
-                        icon="material-symbols:check"
-                      />
-                      <p class="mb-0 text-neutral-80 fw-bold">罐裝水</p>
-                    </li>
-                    <li class="flex-item d-flex gap-2">
-                      <Icon
-                        class="fs-5 text-primary-100"
-                        icon="material-symbols:check"
-                      />
-                      <p class="mb-0 text-neutral-80 fw-bold">梳子</p>
+                      <p class="mb-0 text-neutral-80 fw-bold">
+                        {{ item.title }}
+                      </p>
                     </li>
                   </ul>
                 </section>
@@ -444,8 +430,8 @@ const confirmBooking = () => {
             >
               <img
                 class="img-fluid rounded-3"
-                src="@/assets/images/room-a-1.png"
-                alt="room-a"
+                :src="detailRoomData.imageUrl"
+                :alt="detailRoomData.name"
               />
 
               <div>
@@ -458,36 +444,38 @@ const confirmBooking = () => {
                   <div
                     class="d-flex align-items-center text-neutral-100 fw-medium"
                   >
-                    <span>NT$ 10,000</span>
+                    <span>NT$ {{ detailRoomData.price }}</span>
                     <Icon
                       class="ms-2 me-1 text-neutral-80"
                       icon="material-symbols:close"
                     />
-                    <span class="text-neutral-80">2 晚</span>
+                    <span class="text-neutral-80">{{ daysCount }} 晚</span>
                   </div>
-                  <span class="fw-medium"> NT$ 20,000 </span>
+                  <span class="fw-medium">
+                    NT$ {{ detailRoomData.price * daysCount }}</span
+                  >
                 </div>
-                <div
+                <!-- <div
                   class="d-flex justify-content-between align-items-center fw-medium"
                 >
                   <p class="d-flex align-items-center mb-0 text-neutral-100">
                     住宿折扣
                   </p>
                   <span class="text-primary-100"> -NT$ 1,000 </span>
-                </div>
+                </div> -->
                 <hr class="my-6 opacity-100 text-neutral-40" />
                 <div
                   class="d-flex justify-content-between align-items-center text-neutral-100 fw-bold"
                 >
                   <p class="d-flex align-items-center mb-0">總價</p>
-                  <span> NT$ 19,000 </span>
+                  <span> NT$ {{ detailRoomData.price * daysCount }} </span>
                 </div>
               </div>
 
               <button
                 class="btn btn-primary-100 py-4 text-neutral-0 fw-bold rounded-3"
                 type="button"
-                @click="confirmBooking"
+                @click="postOrderData"
               >
                 確認訂房
               </button>
